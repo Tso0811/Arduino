@@ -1,1 +1,41 @@
+#include<SoftwareSerial.h>
+const byte SSRXPin = 9;
+const byte SSTXPin = 10; 
+SoftwareSerial SSerial(SSRXPin,SSTXPin);  //設定tx rx腳位
+
+void setup() {
+pinMode(SSTXPin,OUTPUT);
+pinMode(SSRXPin,INPUT);
+Serial.begin(9600);
+SSerial.begin(9600);
+
+}
+
+void loop() {
+  byte num; 
+char cmd;
+  if(SSerial.available()){  //確認是否讀取到數據
+    cmd=SSerial.read();     //將讀取到的數據放到cmd這個變數
+      switch (cmd) {        //依照不同的數據顯示不同的輸出
+      case 'S':            
+        Serial.println("接收代碼:'S'，命令:停止");
+        break;
+      case 'F':
+        Serial.println("接收代碼:'F'，命令:前進");
+        break;
+      case 'B':
+        Serial.println("接收代碼:'B'，命令:後退");
+        break;
+      case 'L':
+        Serial.println("接收代碼:'L'，命令:左轉");
+        break;
+      case 'R':
+        Serial.println("接收代碼:'R'，命令:右轉");
+        break;
+
+    }
+  
+  }
+  
+}
 
