@@ -1,9 +1,3 @@
-//motor #IN1:13 IN2:8 IN3:12 IN4:11
-//trig:7 echo:3
-
-
-
-
 #include <SoftwareSerial.h>  
 SoftwareSerial BT(9,10);   // 接收腳(RX), 傳送腳(TX)；接HC-06之TXD、RXD   
   
@@ -24,7 +18,7 @@ void loop()
     val=BT.read(); //每次接收一個字元  
     recieveData += val; //字元組成字串  
     BT.write(byte(val)); //把每次收到的字元轉成byte封包傳至手機端  
-    delay(100);  //每次傳輸間隔，如果太短會造成資料遺失或亂碼  
+    delay(200);  //每次傳輸間隔，如果太短會造成資料遺失或亂碼  
   }  
     
   if(startRecieve)  
@@ -33,5 +27,5 @@ void loop()
   Serial.println(recieveData); //呈現收到字串  
   recieveData = "";  
   }  
-    delay(100);  
-}  
+    delay(300);  
+}
