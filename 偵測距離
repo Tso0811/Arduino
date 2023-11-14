@@ -1,0 +1,23 @@
+//motor #IN1:13 IN2:8 IN3:12 IN4:11
+//trig:7 echo:3
+
+
+
+
+#include <Ultrasonic.h>
+
+Ultrasonic ultrasonic(7,3); //ultrasonic(trig, echo)
+int distance;
+
+void setup() {
+  Serial.begin(9600);
+
+}
+
+void loop() {
+  distance= ultrasonic.read(); //讀取距離
+
+  Serial.print(distance);
+  Serial.println(" cm");
+  delay(500);
+}
