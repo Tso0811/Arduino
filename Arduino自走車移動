@@ -1,21 +1,22 @@
 #include <SoftwareSerial.h>
-int spd = 38;               // 設定速度值0-255
-int timer = 1000;           // 定義整數 timer
-SoftwareSerial BT(13,12);   // 接收腳(RX), 傳送腳(TX)；接HC-06之TXD、RXD；先不要用0,1,因為USB用
+int spd = 80;               // 一般速度
+int spdup = 120;            // 加速速度
+int timer = 1000;           
+SoftwareSerial BT(13,12);   // 接收腳(RX), 傳送腳(TX)
 char command;
 
-const int IN1 = 10;          //L298N IN1 pin 連接 Arduino pin 10 左馬達
-const int IN2 = 11;          //L298N IN2 pin 連接 Arduino pin 11 左倒退
-const int IN3 = 6;           //L298N IN3 pin 連接 Arduino pin 5  右馬達
-const int IN4 = 5;            //L298N IN4 pin 連接 Arduino pin 6
+const int IN1 = 4;          //L298N IN1 pin 
+const int IN2 = 5;          //L298N IN2 pin 
+const int IN3 = 6;          //L298N IN3 pin
+const int IN4 = 7;          //L298N IN4 pin 
 
 void setup() 
 {
-  Serial.begin(9600);     //確認藍牙傳輸速率 9600 bits/second
-  pinMode(6,OUTPUT);      // Arduino 輸出電壓控制車子
+  Serial.begin(9600);     //胞率 9600 
+  pinMode(4,OUTPUT);      
   pinMode(5,OUTPUT);
-  pinMode(11,OUTPUT);
-  pinMode(10,OUTPUT);
+  pinMode(6,OUTPUT);
+  pinMode(7,OUTPUT);
   delay(500);  
   BT.begin(9600); 
 }
@@ -25,28 +26,34 @@ void loop() {
     command = BT.read();
 
     switch (command) {
-      case 'g' : // 接收到 'w'，前進
+      case 'W':           //讀取到W執行加速副程式
+        SpeedUP();
+        break; 
+      case 'f' :          //讀取到F or f執行前進副程式
+      case 'F' :
         Forward();
         break;
-      case 'b' : // 接收到 'x'，後退
+      case 'b' :          //讀取到B or b執行後退副程式
+      case 'B' :
         Back();
         break;
-      case 'l' : // 接收到 'a'，左轉
+      case 'l' :          //讀取到L or l執行左轉副程式
+      case 'L' :
         Left();
         break;
-      case 'r' : // 接收到 'd'，右轉
+      case 'r' :          //讀取到R or r執行右轉副程式
+      case 'R' :
         Right();
         break;
-      case 's' : // 接收到 's'，停止馬達
+      case 's' :          //讀取到S or s執行停止副程式
+      case 'S' :
         Stop();
         break;
       }
       }
-
-
 }
 
-void Forward(void)          //車子前進子程式
+void Forward(void)          //車子前進副程式
 {
   analogWrite(IN1, spd);
   analogWrite(IN2, 0);
@@ -54,15 +61,15 @@ void Forward(void)          //車子前進子程式
   analogWrite(IN4, 0);
 } 
 
-void Back(void)              //車子後退子程式
+void Back(void)              //車子後退副程式
 {
   analogWrite(IN1, 0);
   analogWrite(IN2, spd);
   analogWrite(IN3,0 );
-  analogWrite(IN4, 1);
+  analogWrite(IN4, spd);
 } 
 
-void Stop(void)              //車子停止子程式
+void Stop(void)              //車子停止副程式
 {
   analogWrite(IN1, 0);
   analogWrite(IN2, 0);
@@ -70,18 +77,26 @@ void Stop(void)              //車子停止子程式
   analogWrite(IN4, 0);
 }
 
-void Right(void)              //車子左轉子程式
+void Left(void)              //車子左轉副程式
 {
-  analogWrite(IN1, spd);      //左馬達
-  analogWrite(IN2, 0);    
+  analogWrite(IN1, spd);
+  analogWrite(IN2, 0);
   analogWrite(IN3, 0);
   analogWrite(IN4, 0);
 } 
 
-void Left(void)             //車子右轉子程式
+void Right(void)             //車子右轉副程式
 {
   analogWrite(IN1, 0);
   analogWrite(IN2, 0);
-  analogWrite(IN3, spd);   //右馬達
+  analogWrite(IN3, spd);
   analogWrite(IN4, 0);
 } 
+
+void SpeedUP(void)           //車子加速副程式
+{
+  analogWrite(IN1, spdup);
+  analogWrite(IN2, 0);
+  analogWrite(IN3, spdup);
+  analogWrite(IN4, 0);
+}
