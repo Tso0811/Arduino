@@ -5,7 +5,7 @@ int spdup = 120;            // 加速速度
 int timer = 1000;           
 SoftwareSerial BT(13,12);   // 接收腳(RX), 傳送腳(TX)
 char command;
-Ultrasonic ultrasonic(4,3); //ultrasonic(trig, echo)
+Ultrasonic ultrasonic(3,2); //ultrasonic(trig, echo)
 int distance;
 
 const int IN1 = 4;          //L298N IN1 pin 
@@ -54,10 +54,13 @@ void loop() {
         break;
       }
       }
-       distance= ultrasonic.read(); //讀取距離
+      distance= ultrasonic.read(); //讀取距離
 
       Serial.print(distance);
-      Serial.println(" cm");
+      //Serial.println(" cm");
+      
+      BT.print(distance) ;
+      
       delay(500);
 }
 
