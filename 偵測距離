@@ -1,12 +1,12 @@
 //motor #IN1:13 IN2:8 IN3:12 IN4:11
-//trig:7 echo:3
+//trig:4 echo:3
 
 
 
 
 #include <Ultrasonic.h>
 
-Ultrasonic ultrasonic(7,3); //ultrasonic(trig, echo)
+Ultrasonic ultrasonic(4,3); //ultrasonic(trig, echo)
 int distance;
 
 void setup() {
