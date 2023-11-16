@@ -1,5 +1,5 @@
 #include <SoftwareSerial.h>
-int spd = 80;               // 一般速度
+int spd = 60;               // 一般速度
 int spdup = 120;            // 加速速度
 int timer = 1000;           
 SoftwareSerial BT(13,12);   // 接收腳(RX), 傳送腳(TX)
@@ -55,18 +55,18 @@ void loop() {
 
 void Forward(void)          //車子前進副程式
 {
-  analogWrite(IN1, spd);
-  analogWrite(IN2, 0);
-  analogWrite(IN3, spd);
-  analogWrite(IN4, 0);
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);	
 } 
 
 void Back(void)              //車子後退副程式
 {
-  analogWrite(IN1, 0);
-  analogWrite(IN2, spd);
-  analogWrite(IN3,0 );
-  analogWrite(IN4, spd);
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);	
 } 
 
 void Stop(void)              //車子停止副程式
@@ -80,17 +80,18 @@ void Stop(void)              //車子停止副程式
 void Left(void)              //車子左轉副程式
 {
   analogWrite(IN1, spd);
-  analogWrite(IN2, 0);
-  analogWrite(IN3, 0);
-  analogWrite(IN4, 0);
+  digitalWrite(IN2, HIGH);
+  analogWrite(IN3, spd);
+  digitalWrite(IN4, LOW);
 } 
 
 void Right(void)             //車子右轉副程式
 {
-  analogWrite(IN1, 0);
-  analogWrite(IN2, 0);
+  analogWrite(IN1, spd);
+  digitalWrite(IN2, LOW);
   analogWrite(IN3, spd);
-  analogWrite(IN4, 0);
+  digitalWrite(IN4, HIGH);
+ 
 } 
 
 void SpeedUP(void)           //車子加速副程式
