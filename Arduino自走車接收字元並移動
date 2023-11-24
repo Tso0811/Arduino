@@ -35,19 +35,26 @@ void loop() {
       case 'f' :          //讀取到F or f執行前進副程式
       case 'F' :
         Forward();
+        delay(500);
+        Stop();
         break;
       case 'b' :          //讀取到B or b執行後退副程式
       case 'B' :
         Back();
+        delay(500);
+        Stop();
         break;
       case 'l' :          //讀取到L or l執行左轉副程式
       case 'L' :
         Left();
+        delay(500);
+        Stop();
         break;
       case 'r' :          //讀取到R or r執行右轉副程式
       case 'R' :
-        Right();
-        break;
+        delay(500);
+        Stop();
+       break;
       case 's' :          //讀取到S or s執行停止副程式
       case 'S' :
         Stop();
