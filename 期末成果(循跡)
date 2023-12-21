@@ -11,9 +11,19 @@ const int IN1 = 4;          //L298N IN1 pin
 const int IN2 = 5;          //L298N IN2 pin 
 const int IN3 = 6;          //L298N IN3 pin
 const int IN4 = 7;          //L298N IN4 pin 
+const byte irDl=9;//左(left)紅外線循跡模組。
+const byte irD2=10;//中(center)紅外線循跡模組。
+const byte irD3=8;//右(right)紅外線循跡模組。
+
+
+
+
 void setup() 
 {  
   Serial.begin(9600);     //胞率 9600 
+  pinMode(irDl,INPUT);
+  pinMode(irD2,INPUT);
+  pinMode(irD3,INPUT);
   pinMode(4,OUTPUT);        
   pinMode(5,OUTPUT); 
   pinMode(6,OUTPUT);  
@@ -24,86 +34,75 @@ void setup()
 
 void loop() 
 {       
-  if (BT.available() > 0) {    
-    command = BT.read();    
-    switch (command) {      
-      case 'W':           //讀取到W執行加速副程式        
-        SpeedUP();        
-        break;       
-        case 'f' :          //讀取到F or f執行前進副程式      
-        case 'F' :        
-        Forward();        
-        delay(500);        
-        Stop();        
-        break;      
-      case 'b' :          //讀取到B or b執行後退副程式      
-      case 'B' :        
-        Back();        
-        delay(500);        
-        Stop();
-        break;      
-      case 'l' :          //讀取到L or l執行左轉副程式      
-      case 'L' :        
-        Left();        
-        delay(500);        
-        Stop();        
-        break;      
-      case 'r' :          //讀取到R or r執行右轉副程式      
-      case 'R' :        
-        delay(500);        
-        Stop();       
-        break;      
-      case 's' :          //讀取到S or s執行停止副程式      
-      case 'S' :        
-        Stop();        
-        break;      
-        }      
-        }      
-      distance= ultrasonic.read(); //讀取距離      
-      Serial.print(distance);      //
-      Serial.println(" cm");      
-      BT.print(distance) ;      
-      delay(500);
-      }
-      void Forward(void)          //車子前進副程式
-      {    
-        digitalWrite(IN1, LOW);    
-        digitalWrite(IN2, HIGH);    
-        digitalWrite(IN3, LOW);    
-        digitalWrite(IN4, HIGH);
-      }
-      void Back(void)              //車子後退副程式
-      {  
-        digitalWrite(IN1, HIGH);  
-        digitalWrite(IN2, LOW);  
-        digitalWrite(IN3, HIGH);  
-        digitalWrite(IN4, LOW);
-      }
-      void Stop(void)              //車子停止副程式
-      {  
-        analogWrite(IN1, 0);  
-        analogWrite(IN2, 0);  
-        analogWrite(IN3, 0);  
-        analogWrite(IN4, 0);
-      }
-      void Left(void)              //車子左轉副程式
-      {
-       analogWrite(IN1, spd);  
-       digitalWrite(IN2, HIGH);  
-       analogWrite(IN3, spd);  
-       digitalWrite(IN4, LOW);
-      }
-      void Right(void)             //車子右轉副程式
-      {  
-        analogWrite(IN1, spd);  
-        digitalWrite(IN2, LOW);  
-        analogWrite(IN3, spd);  
-        digitalWrite(IN4, HIGH);
-      }
-      void SpeedUP(void)           //車子加速副程式
-      {  
-        analogWrite(IN1, spdup);  
-        analogWrite(IN2, 0);  
-        analogWrite(IN3, spdup);  
-        analogWrite(IN4, 0);
-      }
+  Serial.println(digitalRead(9));  //左
+  Serial.println(digitalRead(10));  //中
+  Serial.println(digitalRead(8));  //右 //碰白變1
+  
+  delay(500);   
+
+  if (digitalRead(9) == 1 && digitalRead(8) == 1 && digitalRead(10) == 0 ){
+    Forward();
+    delay(500);   
+    Stop();
+  }
+
+  if (digitalRead(9) == 0 && digitalRead(8) == 1 && digitalRead(10) == 1 ){
+    Right();
+    delay(500);   
+    Stop();
+  }
+
+  if (digitalRead(9) == 1 && digitalRead(8) == 0 && digitalRead(10) == 1 ){
+    Left();
+    delay(150);   
+    Stop();
+  }
+  
+  
+  
+  
+
+}      
+     
+void Forward(void)          //車子前進副程式
+{    
+  digitalWrite(IN1, LOW);    
+  digitalWrite(IN2, HIGH);    
+  digitalWrite(IN3, LOW);    
+  digitalWrite(IN4, HIGH);
+}
+void Back(void)              //車子後退副程式
+{  
+  digitalWrite(IN1, HIGH);  
+  digitalWrite(IN2, LOW);  
+  digitalWrite(IN3, HIGH);  
+  digitalWrite(IN4, LOW);
+}
+void Stop(void)              //車子停止副程式
+{  
+  analogWrite(IN1, 0);  
+  analogWrite(IN2, 0);  
+  analogWrite(IN3, 0);  
+  analogWrite(IN4, 0);
+}
+void Left(void)              //車子左轉副程式
+{
+  analogWrite(IN1, spd);  
+  digitalWrite(IN2, HIGH);  
+  analogWrite(IN3, spd);  
+  digitalWrite(IN4, LOW);
+}
+void Right(void)             //車子右轉副程式
+{  
+  analogWrite(IN1, spd);  
+  digitalWrite(IN2, LOW);  
+  analogWrite(IN3, spd);  
+  digitalWrite(IN4, HIGH);
+}
+void SpeedUP(void)           //車子加速副程式
+{  
+  analogWrite(IN1, spdup);  
+  analogWrite(IN2, 0);  
+  analogWrite(IN3, spdup);  
+  analogWrite(IN4, 0);
+}
