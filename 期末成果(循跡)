@@ -42,12 +42,17 @@ void setup()
 
 void loop() 
 {       
+
   Serial.println(digitalRead(9));  //左
   Serial.println(digitalRead(10));  //中
   Serial.println(digitalRead(8));  //右 //碰白變1
   
   delay(1000);   
-
+  if (BT.available() > 0) {
+  command = BT.read();
+  if command == "M"  if (BT.available() > 0) {
+  command = BT.read();
+  if (command == "m"){
   if (digitalRead(9) == 1 && digitalRead(8) == 1 && digitalRead(10) == 0 ){
     Forward();
     delay(1000);   
@@ -78,13 +83,14 @@ void loop()
       Back();
       delay(500);
       Stop();
+}
     }
   }
   
   
   
   
-
+}
 }      
      
 void Forward(void)          //車子前進副程式
